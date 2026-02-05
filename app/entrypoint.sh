@@ -1,3 +1,7 @@
 #!/usr/bin/bash
-.venv/bin/pip install .
+if [[ "$1" == "-i" ]]; then
+    shift
+    .venv/bin/pip install .
+fi
+
 .venv/bin/python main.py
