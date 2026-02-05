@@ -1,7 +1,8 @@
 import sys, os
 from setuptools import setup
 
-dependencies = ['Pillow', 'RPi.GPIO', 'spidev']
+dependencies = [
+    'Pillow', 'RPi.GPIO', 'spidev', 'waveshare-epaper']
 
 setup(
     name='waveshare-epd',
