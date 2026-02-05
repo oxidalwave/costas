@@ -61,15 +61,17 @@ def main():
             Himage = Image.new('1', (epd.width, epd.height), 255)  # 255: clear the frame
             draw = ImageDraw.Draw(Himage)
             schedule = statsapi.schedule(start_date=START_DATE,end_date=END_DATE,team=team['id'])
-            logging.debug(f"Retrieved schedule: {json.dumps(schedule, indent=2)}")
-            if (previousSchedule == schedule):
-                time.sleep(REFRESH_RATE_IN_SECONDS)
-                continue
-            for i, game in enumerate(schedule):
-                logging.debug(f"Drawing text: {game['summary']}")
-                draw.text((10, 10 + i * 30), game['summary'], font = font24, fill = 0)
-            epd.display_Partial(epd.getbuffer(Himage),0, 0, epd.width, epd.height)
-            previousSchedule = schedule
+            if (previousSchedule != schedule):
+                logging.debug(f"Schedule updated: {json.dumps(schedule, indent=2)}")
+                for i, game in enumerate(schedule):
+                    logging.debug(f"Drawing text: {game['summary']}")
+                    draw.text((10, 10 + i * 30), game['summary'], font = font24, fill = 0)
+                logging.debug("Updating display")
+                epd.display_Partial(epd.getbuffer(Himage),0, 0, epd.width, epd.height)
+                previousSchedule = schedule
+            else:
+                logging.debug("Schedule unchanged, skipping update")
+            time.sleep(REFRESH_RATE_IN_SECONDS)
     except IOError as e:
         logging.info(e)
         
