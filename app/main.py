@@ -43,7 +43,7 @@ def main():
         
     except KeyboardInterrupt:    
         logging.info("ctrl + c:")
-        epd7in5_V2.epdconfig.module_exit(cleanup=True)
+        epaper.epaper('epd7in5_V2').epdconfig.module_exit(cleanup=True)
         exit()
 
 if __name__ == "__main__":
