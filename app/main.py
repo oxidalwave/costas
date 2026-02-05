@@ -35,7 +35,7 @@ def main():
             draw = ImageDraw.Draw(Himage)
             schedule = statsapi.schedule(start_date='07/01/2018',end_date='07/31/2018',team=143,opponent=121)
             for i, game in enumerate(schedule):
-                draw.text((10 * i, 120), f"{game['game_date']} Game {game['game_num']} - WP: {game['winning_pitcher']}, LP; {game['losing_pitcher']}", font = font24, fill = 0)
+                draw.text((10, 10 + i * 30), f"{game['game_date']} Game {game['game_num']} - WP: {game['winning_pitcher']}, LP; {game['losing_pitcher']}", font = font24, fill = 0)
             epd.display_Partial(epd.getbuffer(Himage),0, 0, epd.width, epd.height)
         
     except IOError as e:
