@@ -66,9 +66,8 @@ def main():
                 time.sleep(REFRESH_RATE_IN_SECONDS)
                 continue
             for i, game in enumerate(schedule):
-                text = f"{game['game_date']} Game {game['game_num']} - WP: {game['winning_pitcher']}, LP; {game['losing_pitcher']}"
-                logging.debug(f"Drawing text: {text}")
-                draw.text((10, 10 + i * 30), text, font = font24, fill = 0)
+                logging.debug(f"Drawing text: {game['summary']}")
+                draw.text((10, 10 + i * 30), game['summary'], font = font24, fill = 0)
             epd.display_Partial(epd.getbuffer(Himage),0, 0, epd.width, epd.height)
             previousSchedule = schedule
     except IOError as e:
