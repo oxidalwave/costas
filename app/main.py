@@ -4,7 +4,7 @@ import sys
 import os
 
 import logging
-from epaper import epd7in5b_V2
+import epaper
 import time
 from PIL import Image,ImageDraw,ImageFont
 
@@ -12,7 +12,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 try:
     logging.info("epd7in5_V2 Demo")
-    epd = epd7in5b_V2.EPD()
+    epd = epaper.epaper('epd7in5b_V2').EPD()
     
     logging.info("init and Clear")
     epd.init()
