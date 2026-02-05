@@ -3,6 +3,7 @@ from setuptools import setup
 
 dependencies = [
     'Pillow',
+    'swig',
     'lgpio',
     'rpi-lgpio',
     'spidev',
