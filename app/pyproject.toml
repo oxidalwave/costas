@@ -1,0 +1,8 @@
+[project]
+name = "costas"
+authors = [{ name = "Jordan Rust", email = "jordan@oxidalwave.com" }]
+version = "0.1.0"
+description = "Displays a Play By Play on a Waveshare e-Paper Display using a Raspberry Pi"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = []
