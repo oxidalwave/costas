@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding:utf-8 -*-
+import json
 import sys
 import os
 
@@ -60,7 +61,7 @@ def main():
             Himage = Image.new('1', (epd.width, epd.height), 255)  # 255: clear the frame
             draw = ImageDraw.Draw(Himage)
             schedule = statsapi.schedule(start_date=START_DATE,end_date=END_DATE,team=team['id'])
-            logging.debug(f"Retrieved schedule: {schedule}")
+            logging.debug(f"Retrieved schedule: {json.dumps(schedule, indent=2)}")
             if (previousSchedule == schedule):
                 time.sleep(REFRESH_RATE_IN_SECONDS)
                 continue
