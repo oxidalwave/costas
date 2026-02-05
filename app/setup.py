@@ -9,7 +9,7 @@ setup(
     description='Waveshare e-Paper Display',
     author='Waveshare',
     package_dir={'': 'lib'},
-    packages=[],
+    packages=['waveshare_epd'],
     install_requires=dependencies,
 )
 
