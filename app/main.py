@@ -2,13 +2,9 @@
 # -*- coding:utf-8 -*-
 import sys
 import os
-picdir = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), 'pic')
-libdir = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), 'lib')
-if os.path.exists(libdir):
-    sys.path.append(libdir)
 
 import logging
-from waveshare_epd import epd7in5b_V2
+from epaper import epd7in5b_V2
 import time
 from PIL import Image,ImageDraw,ImageFont
 
@@ -22,9 +18,9 @@ try:
     epd.init()
     epd.Clear()
 
-    font24 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 24)
-    font18 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 18)
-    font35 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 35)
+    font24 = ImageFont.truetype('Font.ttc', 24)
+    font18 = ImageFont.truetype('Font.ttc', 18)
+    font35 = ImageFont.truetype('Font.ttc', 35)
 
     # Drawing on the Horizontal image
     logging.info("Drawing on the Horizontal image...")
