@@ -57,6 +57,7 @@ def main():
             Himage = Image.new('1', (epd.width, epd.height), 255)  # 255: clear the frame
             draw = ImageDraw.Draw(Himage)
             schedule = statsapi.schedule(start_date=START_DATE,end_date=END_DATE,team=team['id'])
+            logging.info(schedule)
             if (previousSchedule == schedule):
                 time.sleep(REFRESH_RATE_IN_SECONDS)
                 continue
