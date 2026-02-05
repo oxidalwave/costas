@@ -15,6 +15,12 @@ from PIL import Image,ImageDraw,ImageFont
 import traceback
 import statsapi
 
+REFRESH_RATE_IN_SECONDS = 5
+
+START_DATE = '07/01/2024'
+END_DATE = '07/31/2024'
+TEAM_CODE = 'min'
+
 def main():
     logging.basicConfig(level=logging.DEBUG)
 
@@ -28,16 +34,36 @@ def main():
 
         font24 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 24)
 
+        teams = statsapi.lookup_team(TEAM_CODE)
+        if (len(teams) != 1):
+            logging.error(f"No team found for code {TEAM_CODE}")
+            return
+        team = teams[0]
+        logging.info(f"Displaying schedule for {team['name']}")
+
+        """ nextGameId = statsapi.next_game(team['id'])
+        if (not nextGameId):
+            logging.error(f"No upcoming games found for team {team['name']}")
+            return
+        
+        nextGame = statsapi.boxscore_data(nextGameId)
+        if (not nextGame):
+            logging.error(f"Could not retrieve boxscore for game ID {nextGameId}")
+            return """
+
         while (True):
             logging.info("Drawing clock...")
             epd.init_fast()
             Himage = Image.new('1', (epd.width, epd.height), 255)  # 255: clear the frame
             draw = ImageDraw.Draw(Himage)
-            schedule = statsapi.schedule(start_date='07/01/2018',end_date='07/31/2018',team=143,opponent=121)
+            schedule = statsapi.schedule(start_date=START_DATE,end_date=END_DATE,team=team['id'])
+            if (previousSchedule == schedule):
+                time.sleep(REFRESH_RATE_IN_SECONDS)
+                continue
             for i, game in enumerate(schedule):
                 draw.text((10, 10 + i * 30), f"{game['game_date']} Game {game['game_num']} - WP: {game['winning_pitcher']}, LP; {game['losing_pitcher']}", font = font24, fill = 0)
             epd.display_Partial(epd.getbuffer(Himage),0, 0, epd.width, epd.height)
-        
+            previousSchedule = schedule
     except IOError as e:
         logging.info(e)
         
