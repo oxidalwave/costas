@@ -15,6 +15,8 @@ from PIL import Image,ImageDraw,ImageFont
 import traceback
 import statsapi
 
+DISPLAY_CODE = "epd7in5_V2"
+
 REFRESH_RATE_IN_SECONDS = 5
 
 START_DATE = '07/01/2024'
@@ -25,8 +27,7 @@ def main():
     logging.basicConfig(level=logging.DEBUG)
 
     try:
-        logging.info("epd7in5_V2 Demo")
-        epd = epaper.epaper('epd7in5_V2').EPD()
+        epd = epaper.epaper(DISPLAY_CODE).EPD()
         
         logging.info("init and Clear")
         epd.init()
@@ -35,6 +36,8 @@ def main():
         font24 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 24)
 
         teams = statsapi.lookup_team(TEAM_CODE)
+        logging.info(f"Searching for team {TEAM_CODE}")
+        logging.info(f"Found teams: {teams}")
         if (len(teams) != 1):
             logging.error(f"No team found for code {TEAM_CODE}")
             return
@@ -52,17 +55,18 @@ def main():
             return """
 
         while (True):
-            logging.info("Drawing clock...")
             epd.init_fast()
             Himage = Image.new('1', (epd.width, epd.height), 255)  # 255: clear the frame
             draw = ImageDraw.Draw(Himage)
             schedule = statsapi.schedule(start_date=START_DATE,end_date=END_DATE,team=team['id'])
-            logging.info(schedule)
+            logging.debug(f"Retrieved schedule: {schedule}")
             if (previousSchedule == schedule):
                 time.sleep(REFRESH_RATE_IN_SECONDS)
                 continue
             for i, game in enumerate(schedule):
-                draw.text((10, 10 + i * 30), f"{game['game_date']} Game {game['game_num']} - WP: {game['winning_pitcher']}, LP; {game['losing_pitcher']}", font = font24, fill = 0)
+                text = f"{game['game_date']} Game {game['game_num']} - WP: {game['winning_pitcher']}, LP; {game['losing_pitcher']}"
+                logging.debug(f"Drawing text: {text}")
+                draw.text((10, 10 + i * 30), text, font = font24, fill = 0)
             epd.display_Partial(epd.getbuffer(Himage),0, 0, epd.width, epd.height)
             previousSchedule = schedule
     except IOError as e:
@@ -70,7 +74,7 @@ def main():
         
     except KeyboardInterrupt:    
         logging.info("ctrl + c:")
-        epaper.epaper('epd7in5_V2').epdconfig.module_exit(cleanup=True)
+        epaper.epaper(DISPLAY_CODE).epdconfig.module_exit(cleanup=True)
         exit()
 
 if __name__ == "__main__":
