@@ -8,7 +8,7 @@ if os.path.exists(libdir):
     sys.path.append(libdir)
 
 import logging
-from waveshare_epd import epd7in5_V2
+from epd7in5_V2 import epd7in5_V2
 import time
 from PIL import Image,ImageDraw,ImageFont
 import traceback
@@ -28,14 +28,10 @@ try:
     font35 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 35)
 
     logging.info("read bmp file")
-    Himage = Image.open(os.path.join(picdir, '7in5_V2.bmp'))
-    epd.display(epd.getbuffer(Himage))
     time.sleep(2)
 
     logging.info("read bmp file on window")
     Himage2 = Image.new('1', (epd.width, epd.height), 255)  # 255: clear the frame
-    bmp = Image.open(os.path.join(picdir, '100x100.bmp'))
-    Himage2.paste(bmp, (50,10))
     epd.display(epd.getbuffer(Himage2))
     time.sleep(2)
 
@@ -55,7 +51,6 @@ try:
     draw.arc((140, 50, 190, 100), 0, 360, fill = 0)
     draw.rectangle((80, 50, 130, 100), fill = 0)
     draw.chord((200, 50, 250, 100), 0, 360, fill = 0)
-    epd.display(epd.getbuffer(Himage))
     time.sleep(2)
 
     # partial update
