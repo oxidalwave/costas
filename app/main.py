@@ -54,6 +54,7 @@ def main():
             logging.error(f"Could not retrieve boxscore for game ID {nextGameId}")
             return """
 
+        previousSchedule = None
         while (True):
             epd.init_fast()
             Himage = Image.new('1', (epd.width, epd.height), 255)  # 255: clear the frame
