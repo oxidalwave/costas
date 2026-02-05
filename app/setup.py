@@ -2,7 +2,7 @@ import sys, os
 from setuptools import setup
 
 dependencies = [
-    'Pillow', 'RPi.GPIO', 'spidev', 'MLB-StatsAPI', 'gpiozero', 'lgpio', 'waveshare-epaper']
+    'Pillow', 'rpi-lgpio', 'spidev', 'MLB-StatsAPI', 'gpiozero', 'waveshare-epaper']
 
 setup(
     name='waveshare-epd',
