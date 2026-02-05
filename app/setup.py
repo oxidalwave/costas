@@ -1,14 +1,7 @@
 import sys, os
 from setuptools import setup
 
-dependencies = ['Pillow']
-
-if os.path.exists('/sys/bus/platform/drivers/gpiomem-bcm2835'):
-    dependencies += ['RPi.GPIO', 'spidev']
-elif os.path.exists('/sys/bus/platform/drivers/gpio-x3'):
-    dependencies += ['Hobot.GPIO', 'spidev']
-else:
-    dependencies += ['Jetson.GPIO']
+dependencies = ['Pillow', 'RPi.GPIO', 'spidev']
 
 setup(
     name='waveshare-epd',
