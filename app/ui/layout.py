@@ -177,7 +177,10 @@ def _layout_leaf_or_container(node: Node) -> Tuple[int, int]:
     style = node.props.get("style")
     if node.type in ("view",):
         if style.width is not None or style.height is not None:
-            return (style.width or 0, style.height or 0)
+            measured_width, measured_height = _measure_container(node)
+            width = style.width if style.width is not None else measured_width
+            height = style.height if style.height is not None else measured_height
+            return (width, height)
         return _measure_container(node)
     return _layout_leaf(node)
 
