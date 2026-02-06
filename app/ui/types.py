@@ -9,6 +9,7 @@ class Style:
     padding: int = 0
     gap: int = 0
     direction: str = "column"
+    justify: str = "start"
     align: str = "start"
     x: Optional[int] = None
     y: Optional[int] = None

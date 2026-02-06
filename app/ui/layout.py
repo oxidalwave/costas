@@ -73,9 +73,22 @@ def _layout_children(
     available_height = max(0, height - style.padding * 2)
     children: List[LayoutNode] = []
 
+    sizes = []
+    for child in node.children:
+        sizes.append(_layout_leaf_or_container(child))
+
     if style.direction == "row":
-        for child in node.children:
-            child_width, child_height = _layout_leaf_or_container(child)
+        total_main = sum(width for width, _ in sizes)
+        gap = style.gap
+        if style.justify == "center":
+            cursor_x += max(0, (available_width - (total_main + gap * max(0, len(sizes) - 1))) // 2)
+        elif style.justify == "end":
+            cursor_x += max(0, available_width - (total_main + gap * max(0, len(sizes) - 1)))
+        elif style.justify == "space-between" and len(sizes) > 1:
+            remaining = available_width - total_main
+            gap = max(0, remaining // (len(sizes) - 1))
+
+        for (child_width, child_height), child in zip(sizes, node.children):
             align_offset = 0
             if style.align == "center":
                 align_offset = max(0, (available_height - child_height) // 2)
@@ -95,10 +108,19 @@ def _layout_children(
                 if child_style.y is not None:
                     child_node.y = y + child_style.y
             children.append(child_node)
-            cursor_x += child_width + style.gap
+            cursor_x += child_width + gap
     else:
-        for child in node.children:
-            child_width, child_height = _layout_leaf_or_container(child)
+        total_main = sum(height for _, height in sizes)
+        gap = style.gap
+        if style.justify == "center":
+            cursor_y += max(0, (available_height - (total_main + gap * max(0, len(sizes) - 1))) // 2)
+        elif style.justify == "end":
+            cursor_y += max(0, available_height - (total_main + gap * max(0, len(sizes) - 1)))
+        elif style.justify == "space-between" and len(sizes) > 1:
+            remaining = available_height - total_main
+            gap = max(0, remaining // (len(sizes) - 1))
+
+        for (child_width, child_height), child in zip(sizes, node.children):
             align_offset = 0
             if style.align == "center":
                 align_offset = max(0, (available_width - child_width) // 2)
@@ -118,7 +140,7 @@ def _layout_children(
                 if child_style.y is not None:
                     child_node.y = y + child_style.y
             children.append(child_node)
-            cursor_y += child_height + style.gap
+            cursor_y += child_height + gap
 
     for child in children:
         _layout_container_children(child)

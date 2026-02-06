@@ -13,8 +13,8 @@ def teamScore(props: Dict[str, object]):
 
     return View(
         Text(teamCode, font=font),
-        Text(score, font=font, style=Style(align="end")),
-        style=Style(direction="row"),
+        Text(score, font=font),
+        style=Style(direction="row", justify="space-between", width=200, gap=4),
     )
 
 def scorebug(props: Dict[str, object]):
@@ -36,13 +36,13 @@ def scorebug(props: Dict[str, object]):
             View(
                 View(
                     Text(batter["name"], font=font),
-                    Text(f"{batter['wpa+']} WPA+", font=font, style=Style(align="end")),
-                    style=Style(direction="row"),
+                    Text(f"{batter['wpa+']} WPA+", font=font),
+                    style=Style(direction="row", justify="space-between", width=200, gap=4),
                 ),
                 View(
                     Text(pitcher["name"], font=font),
-                    Text(f"{pitcher['era']} ERA", font=font, style=Style(align="end")),
-                    style=Style(direction="row"),
+                    Text(f"{pitcher['era']} ERA", font=font),
+                    style=Style(direction="row", justify="space-between", width=200, gap=4),
                 ),
                 style=Style(direction="column"),
             ),
