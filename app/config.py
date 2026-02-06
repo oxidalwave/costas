@@ -28,7 +28,6 @@ class Config():
         with open(self._filename, 'w') as f:
             json.dump(data, f)
 
-    @property
     def getDisplayCode(self):
         return self._displayCode
     
@@ -36,7 +35,6 @@ class Config():
         self._displayCode = code
         self._setConfigValue("displayCode", code)
     
-    @property
     def getRefreshRateInSeconds(self):
         return self._refreshRateInSeconds
     
@@ -44,7 +42,6 @@ class Config():
         self._refreshRateInSeconds = rate
         self._setConfigValue("refreshRateInSeconds", rate)
     
-    @property
     def getStartDate(self):
         return self._startDate
     
@@ -52,7 +49,6 @@ class Config():
         self._startDate = date
         self._setConfigValue("startDate", date)
     
-    @property
     def getEndDate(self):
         return self._endDate
     
@@ -60,7 +56,6 @@ class Config():
         self._endDate = date
         self._setConfigValue("endDate", date)
     
-    @property
     def getTeamCode(self):
         return self._teamCode
     
