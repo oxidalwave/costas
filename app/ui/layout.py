@@ -69,30 +69,54 @@ def _layout_children(
     style = node.props["style"]
     cursor_x = x + style.padding
     cursor_y = y + style.padding
+    available_width = max(0, width - style.padding * 2)
+    available_height = max(0, height - style.padding * 2)
     children: List[LayoutNode] = []
 
     if style.direction == "row":
         for child in node.children:
             child_width, child_height = _layout_leaf_or_container(child)
+            align_offset = 0
+            if style.align == "center":
+                align_offset = max(0, (available_height - child_height) // 2)
+            elif style.align == "end":
+                align_offset = max(0, available_height - child_height)
             child_node = LayoutNode(
                 node=child,
                 x=cursor_x,
-                y=cursor_y,
+                y=cursor_y + align_offset,
                 width=child_width,
                 height=child_height,
             )
+            child_style = child.props.get("style")
+            if isinstance(child_style, Style):
+                if child_style.x is not None:
+                    child_node.x = x + child_style.x
+                if child_style.y is not None:
+                    child_node.y = y + child_style.y
             children.append(child_node)
             cursor_x += child_width + style.gap
     else:
         for child in node.children:
             child_width, child_height = _layout_leaf_or_container(child)
+            align_offset = 0
+            if style.align == "center":
+                align_offset = max(0, (available_width - child_width) // 2)
+            elif style.align == "end":
+                align_offset = max(0, available_width - child_width)
             child_node = LayoutNode(
                 node=child,
-                x=cursor_x,
+                x=cursor_x + align_offset,
                 y=cursor_y,
                 width=child_width,
                 height=child_height,
             )
+            child_style = child.props.get("style")
+            if isinstance(child_style, Style):
+                if child_style.x is not None:
+                    child_node.x = x + child_style.x
+                if child_style.y is not None:
+                    child_node.y = y + child_style.y
             children.append(child_node)
             cursor_y += child_height + style.gap
 
