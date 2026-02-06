@@ -104,21 +104,21 @@ def main():
                 draw = ImageDraw.Draw(Himage)
                 
                 draw.text((2, 2), data['scorebug']['away']['teamCode'], font=font, fill = 0)
-                draw.text((100, 2), data['scorebug']['away']['score'], font=font, fill = 0)
+                draw.text((50, 2), data['scorebug']['away']['score'], font=font, fill = 0)
                 draw.line((0, FONT_SIZE + 2, 400, FONT_SIZE + 2), fill = 0)
 
                 homeY = FONT_SIZE + 2
                 draw.text((2, homeY), data['scorebug']['home']['teamCode'], font=font, fill = 0)
-                draw.text((100, homeY), data['scorebug']['home']['score'], font=font, fill = 0)
+                draw.text((50, homeY), data['scorebug']['home']['score'], font=font, fill = 0)
                 draw.line((0, homeY + FONT_SIZE, 400, homeY + FONT_SIZE), fill = 0)
 
-                draw.text((200, 2), data['atBat']['batter']['name'], font=font, fill = 0)
+                draw.text((102, 2), data['atBat']['batter']['name'], font=font, fill = 0)
                 draw.text((300, 2), f"{data['atBat']['batter']['wpa+']} WPA+", font=font, fill = 0)
 
-                draw.text((200, homeY), data['atBat']['pitcher']['name'], font=font, fill = 0)
+                draw.text((102, homeY), data['atBat']['pitcher']['name'], font=font, fill = 0)
                 draw.text((300, homeY), f"{data['atBat']['pitcher']['era']} ERA", font=font, fill = 0)
 
-                draw.line((200, 0, 200, homeY + FONT_SIZE), fill = 0)
+                draw.line((100, 0, 100, homeY + FONT_SIZE), fill = 0)
                 draw.line((400, 0, 400, homeY + FONT_SIZE), fill = 0)
 
                 draw.line((epd.width / 2, 0, epd.width / 2, epd.height), fill = 0)
