@@ -16,6 +16,8 @@ import time
 from PIL import Image,ImageDraw,ImageFont
 import statsapi
 
+FONT_SIZE = 24
+
 def getTeamByCode(teamCode: str):
     teams = statsapi.lookup_team(teamCode)
     logging.info(f"Searching for team {teamCode}")
@@ -91,12 +93,16 @@ def main():
                 draw = ImageDraw.Draw(Himage)
                 
                 draw.text((2, 2), data['scorebug']['away']['teamCode'], font=font, fill = 0)
-                draw.text((2, 26), data['scorebug']['home']['teamCode'], font=font, fill = 0)
-                draw.line((0, 52, 202, 52), fill = 0)
+                draw.text((100, 2), data['scorebug']['away']['score'], font=font, fill = 0)
+                draw.line((0, FONT_SIZE + 2, 202, FONT_SIZE + 2), fill = 0)
 
-                draw.text((202, 2), data['scorebug']['away']['score'], font=font, fill = 0)
-                draw.text((202, 26), data['scorebug']['home']['score'], font=font, fill = 0)
-                draw.line((0, 52, 202, 52), fill = 0)
+                homeY = FONT_SIZE + 2
+                draw.text((2, homeY), data['scorebug']['home']['teamCode'], font=font, fill = 0)
+                draw.text((100, homeY), data['scorebug']['home']['score'], font=font, fill = 0)
+                draw.line((0, homeY + FONT_SIZE, 202, homeY + FONT_SIZE), fill = 0)
+
+                draw.line((200, 0, 200, epd.height), fill = 0)
+                draw.line((400, 0, 400, epd.height), fill = 0)
 
                 draw.line((epd.width / 2, 0, epd.width / 2, epd.height), fill = 0)
 
