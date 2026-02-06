@@ -25,10 +25,21 @@ def getTeamByCode(teamCode: str):
         return None
     return teams[0]
 
-def getFontSize(displayCode: str):
-    if (displayCode == 'epd7in5_V2'):
-        return 24
-    return 18
+def drawScorebug(epd, font, scorebug):
+    Himage = Image.new('1', (epd.width / 2, epd.height / 8), 255) # 255: clear the frame
+    draw = ImageDraw.Draw(Himage)
+    
+    draw.text((2, 2), scorebug['away']['teamCode'], font=font, fill = 0)
+    draw.text((2, 28), scorebug['home']['teamCode'], font=font, fill = 0)
+    draw.text((2 + (epd.width / 4), 2), scorebug['away']['score'], font=font, fill = 0)
+    draw.text((2 + (epd.width / 4), 28), scorebug['home']['score'], font=font, fill = 0)
+
+    logging.debug("Updating display")
+    epd.display_Partial(epd.getbuffer(Himage), 0, 0, epd.width / 2, epd.height / 8)
+    return Himage
+
+def drawBoxscore(epd, boxscore):
+    return
 
 def main():
     logging.basicConfig(level=logging.DEBUG)
@@ -51,8 +62,7 @@ def main():
         epd.init()
         epd.Clear()
 
-        fontSize = getFontSize(config.getDisplayCode())
-        font = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), fontSize)
+        font = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 24)
 
         teamCode = config.getTeamCode()
         team = getTeamByCode(teamCode)
@@ -61,17 +71,7 @@ def main():
             return
         logging.info(f"Displaying schedule for {team['name']}")
 
-        """ nextGameId = statsapi.next_game(team['id'])
-        if (not nextGameId):
-            logging.error(f"No upcoming games found for team {team['name']}")
-            return
-        
-        nextGame = statsapi.boxscore_data(nextGameId)
-        if (not nextGame):
-            logging.error(f"Could not retrieve boxscore for game ID {nextGameId}")
-            return """
-
-        previousSchedule = None
+        previousData = None
         while (True):
             if (teamCode != config.getTeamCode()):
                 logging.info("Team code changed, updating team info")
@@ -81,20 +81,30 @@ def main():
                     logging.error(f"Could not find team for code {teamCode}, exiting")
                     return
                 logging.info(f"Displaying schedule for {team['name']}")
+
+            data = {
+                'away': {
+                    'teamCode': team['abbreviation'],
+                    'score': '0'
+                },
+                'home': {
+                    'teamCode': 'OPP',
+                    'score': '0'
+                }
+            }
+
             epd.init_fast()
-            Himage = Image.new('1', (epd.width, epd.height), 255)  # 255: clear the frame
-            draw = ImageDraw.Draw(Himage)
-            schedule = statsapi.schedule(start_date=config.getStartDate(), end_date=config.getEndDate(), team=team['id'])
-            if (previousSchedule != schedule):
-                logging.debug(f"Schedule updated: {json.dumps(schedule, indent=2)}")
-                for i, game in enumerate(schedule):
-                    logging.debug(f"Drawing text: {game['summary']}")
-                    draw.text((10, 10 + i * fontSize), game['summary'], font=font, fill = 0)
+
+            if (previousData != data):
+                logging.debug(f"Data updated: {json.dumps(data, indent=2)}")
+                scorebugImage = drawScorebug(epd, font, data)
+
                 logging.debug("Updating display")
-                epd.display_Partial(epd.getbuffer(Himage),0, 0, epd.width, epd.height)
-                previousSchedule = schedule
+                epd.display_Partial(epd.getbuffer(scorebugImage), 0, 0, epd.width, epd.height)
+                previousData = data
             else:
                 logging.debug("Schedule unchanged, skipping update")
+
             time.sleep(config.getRefreshRateInSeconds())
     except IOError as e:
         logging.info(e)
