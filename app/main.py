@@ -84,12 +84,12 @@ def main():
 
             data = {
                 'away': {
-                    'teamCode': team['abbreviation'],
+                    'teamCode': 'NYY',
                     'score': '0'
                 },
                 'home': {
-                    'teamCode': 'OPP',
-                    'score': '0'
+                    'teamCode': team['teamCode'],
+                    'score': '3'
                 }
             }
 
