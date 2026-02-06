@@ -72,7 +72,7 @@ def main():
             data = {
                 'scorebug': {
                     'away': {
-                        'teamCode': 'NYY',
+                        'teamCode': 'nyy',
                         'score': '0'
                     },
                     'home': {
@@ -91,9 +91,14 @@ def main():
                 draw = ImageDraw.Draw(Himage)
                 
                 draw.text((2, 2), data['scorebug']['away']['teamCode'], font=font, fill = 0)
-                draw.text((2, 28), data['scorebug']['home']['teamCode'], font=font, fill = 0)
+                draw.text((2, 26), data['scorebug']['home']['teamCode'], font=font, fill = 0)
+                draw.line((0, 52, 202, 52), fill = 0)
+
                 draw.text((202, 2), data['scorebug']['away']['score'], font=font, fill = 0)
-                draw.text((202, 28), data['scorebug']['home']['score'], font=font, fill = 0)
+                draw.text((202, 26), data['scorebug']['home']['score'], font=font, fill = 0)
+                draw.line((0, 52, 202, 52), fill = 0)
+
+                draw.line((epd.width / 2, 0, epd.width / 2, epd.height), fill = 0)
 
                 logging.debug("Updating display")
                 epd.display(epd.getbuffer(Himage))
