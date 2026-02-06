@@ -25,19 +25,6 @@ def getTeamByCode(teamCode: str):
         return None
     return teams[0]
 
-def drawScorebug(epd, font, scorebug):
-    Himage = Image.new('1', (epd.width / 2, epd.height / 8), 255) # 255: clear the frame
-    draw = ImageDraw.Draw(Himage)
-    
-    draw.text((2, 2), scorebug['away']['teamCode'], font=font, fill = 0)
-    draw.text((2, 28), scorebug['home']['teamCode'], font=font, fill = 0)
-    draw.text((2 + (epd.width / 4), 2), scorebug['away']['score'], font=font, fill = 0)
-    draw.text((2 + (epd.width / 4), 28), scorebug['home']['score'], font=font, fill = 0)
-
-    logging.debug("Updating display")
-    epd.display_Partial(epd.getbuffer(Himage), 0, 0, epd.width / 2, epd.height / 8)
-    return Himage
-
 def drawBoxscore(epd, boxscore):
     return
 
@@ -83,13 +70,15 @@ def main():
                 logging.info(f"Displaying schedule for {team['name']}")
 
             data = {
-                'away': {
-                    'teamCode': 'NYY',
-                    'score': '0'
-                },
-                'home': {
-                    'teamCode': team['teamCode'],
-                    'score': '3'
+                'scorebug': {
+                    'away': {
+                        'teamCode': 'NYY',
+                        'score': '0'
+                    },
+                    'home': {
+                        'teamCode': team['teamCode'],
+                        'score': '3'
+                    }
                 }
             }
 
@@ -97,10 +86,18 @@ def main():
 
             if (previousData != data):
                 logging.debug(f"Data updated: {json.dumps(data, indent=2)}")
-                scorebugImage = drawScorebug(epd, font, data)
+
+                Himage = Image.new('1', (epd.width / 2, epd.height / 8), 255) # 255: clear the frame
+                draw = ImageDraw.Draw(Himage)
+                
+                draw.text((2, 2), data['away']['teamCode'], font=font, fill = 0)
+                draw.text((2, 28), data['home']['teamCode'], font=font, fill = 0)
+                draw.text((202, 2), data['away']['score'], font=font, fill = 0)
+                draw.text((202, 28), data['home']['score'], font=font, fill = 0)
 
                 logging.debug("Updating display")
-                epd.display_Partial(epd.getbuffer(scorebugImage), 0, 0, epd.width, epd.height)
+                epd.display(epd.getbuffer(Himage))
+
                 previousData = data
             else:
                 logging.debug("Schedule unchanged, skipping update")
