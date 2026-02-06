@@ -77,11 +77,11 @@ def main():
                 'scorebug': {
                     'away': {
                         'teamCode': 'nyy',
-                        'score': '0'
+                        'score': '4'
                     },
                     'home': {
                         'teamCode': team['teamCode'],
-                        'score': '3'
+                        'score': '13'
                     }
                 },
                 'atBat': {
