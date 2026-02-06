@@ -3,8 +3,18 @@ import json
 class Config():
     def __init__(self, filename='config.json'):
         self._filename = filename
-        with open(self._filename, 'r') as f:
-            saved = json.load(f)
+        try:
+            with open(self._filename, 'r') as f:
+                saved = json.load(f)
+        except FileNotFoundError:
+            saved = {
+                "displayCode": "epd7in5_V2",
+                "refreshRateInSeconds": 5,
+                "startDate": '07/01/2024',
+                "endDate": '07/31/2024',
+                "teamCode": 'min'
+            }
+            json.dump(saved, open(self._filename, 'w'))
         self._displayCode = saved.get("displayCode", "epd7in5_V2")
         self._refreshRateInSeconds = saved.get("refreshRateInSeconds", 5)
         self._startDate = saved.get("startDate", '07/01/2024')
