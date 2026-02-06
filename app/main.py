@@ -16,7 +16,7 @@ import time
 from PIL import Image,ImageDraw,ImageFont
 import statsapi
 
-def getTeamByCode(teamCode):
+def getTeamByCode(teamCode: str):
     teams = statsapi.lookup_team(teamCode)
     logging.info(f"Searching for team {teamCode}")
     logging.info(f"Found teams: {teams}")
@@ -24,6 +24,11 @@ def getTeamByCode(teamCode):
         logging.error(f"No team found for code {teamCode}")
         return None
     return teams[0]
+
+def getFontSize(displayCode: str):
+    if (displayCode == 'epd7in5_V2'):
+        return 24
+    return 18
 
 def main():
     logging.basicConfig(level=logging.DEBUG)
@@ -46,7 +51,8 @@ def main():
         epd.init()
         epd.Clear()
 
-        font20 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 20)
+        fontSize = getFontSize(config.getDisplayCode())
+        font = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), fontSize)
 
         teamCode = config.getTeamCode()
         team = getTeamByCode(teamCode)
@@ -83,7 +89,7 @@ def main():
                 logging.debug(f"Schedule updated: {json.dumps(schedule, indent=2)}")
                 for i, game in enumerate(schedule):
                     logging.debug(f"Drawing text: {game['summary']}")
-                    draw.text((10, 10 + i * 20), game['summary'], font = font20, fill = 0)
+                    draw.text((10, 10 + i * fontSize), game['summary'], font=font, fill = 0)
                 logging.debug("Updating display")
                 epd.display_Partial(epd.getbuffer(Himage),0, 0, epd.width, epd.height)
                 previousSchedule = schedule
