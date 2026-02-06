@@ -112,13 +112,13 @@ def main():
                 draw.text((50, homeY), data['scorebug']['home']['score'], font=font, fill = 0)
                 draw.line((0, homeY + FONT_SIZE, 400, homeY + FONT_SIZE), fill = 0)
 
-                draw.text((102, 2), data['atBat']['batter']['name'], font=font, fill = 0)
-                draw.text((300, 2), f"{data['atBat']['batter']['wpa+']} WPA+", font=font, fill = 0)
+                draw.text((82, 2), data['atBat']['batter']['name'], font=font, fill = 0)
+                draw.text((280, 2), f"{data['atBat']['batter']['wpa+']} WPA+", font=font, fill = 0)
 
-                draw.text((102, homeY), data['atBat']['pitcher']['name'], font=font, fill = 0)
-                draw.text((300, homeY), f"{data['atBat']['pitcher']['era']} ERA", font=font, fill = 0)
+                draw.text((82, homeY), data['atBat']['pitcher']['name'], font=font, fill = 0)
+                draw.text((280, homeY), f"{data['atBat']['pitcher']['era']} ERA", font=font, fill = 0)
 
-                draw.line((100, 0, 100, homeY + FONT_SIZE), fill = 0)
+                draw.line((80, 0, 100, homeY + FONT_SIZE), fill = 0)
                 draw.line((400, 0, 400, homeY + FONT_SIZE), fill = 0)
 
                 draw.line((epd.width / 2, 0, epd.width / 2, epd.height), fill = 0)
