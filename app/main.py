@@ -46,7 +46,7 @@ def main():
         epd.init()
         epd.Clear()
 
-        font16 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 16)
+        font20 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 20)
 
         teamCode = config.getTeamCode()
         team = getTeamByCode(teamCode)
@@ -83,7 +83,7 @@ def main():
                 logging.debug(f"Schedule updated: {json.dumps(schedule, indent=2)}")
                 for i, game in enumerate(schedule):
                     logging.debug(f"Drawing text: {game['summary']}")
-                    draw.text((10, 10 + i * 20), game['summary'], font = font16, fill = 0)
+                    draw.text((10, 10 + i * 20), game['summary'], font = font20, fill = 0)
                 logging.debug("Updating display")
                 epd.display_Partial(epd.getbuffer(Himage),0, 0, epd.width, epd.height)
                 previousSchedule = schedule
