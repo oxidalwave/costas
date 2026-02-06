@@ -73,11 +73,11 @@ def main():
                 'scorebug': {
                     'away': {
                         'teamCode': 'NYY',
-                        'score': '0'
+                        'score': 0
                     },
                     'home': {
                         'teamCode': team['teamCode'],
-                        'score': '3'
+                        'score': 3
                     }
                 }
             }
@@ -87,13 +87,13 @@ def main():
             if (previousData != data):
                 logging.debug(f"Data updated: {json.dumps(data, indent=2)}")
 
-                Himage = Image.new('1', (epd.width / 2, epd.height / 8), 255) # 255: clear the frame
+                Himage = Image.new('1', (epd.width, epd.height), 255) # 255: clear the frame
                 draw = ImageDraw.Draw(Himage)
                 
-                draw.text((2, 2), data['away']['teamCode'], font=font, fill = 0)
-                draw.text((2, 28), data['home']['teamCode'], font=font, fill = 0)
-                draw.text((202, 2), data['away']['score'], font=font, fill = 0)
-                draw.text((202, 28), data['home']['score'], font=font, fill = 0)
+                draw.text((2, 2), data['scorebug']['away']['teamCode'], font=font, fill = 0)
+                draw.text((2, 28), data['scorebug']['home']['teamCode'], font=font, fill = 0)
+                draw.text((202, 2), data['scorebug']['away']['score'], font=font, fill = 0)
+                draw.text((202, 28), data['scorebug']['home']['score'], font=font, fill = 0)
 
                 logging.debug("Updating display")
                 epd.display(epd.getbuffer(Himage))
